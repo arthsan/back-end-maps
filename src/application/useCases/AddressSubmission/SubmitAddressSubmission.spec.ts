@@ -1,4 +1,3 @@
-import { Address } from "../../../domain/entities/Address";
 import { AddressSubmission } from "./SubmitAddressSubmission";
 
 describe("Create address submission use case", () => {
@@ -7,27 +6,9 @@ describe("Create address submission use case", () => {
 
     const response = await adds.execute({
       addresses: [
-        Address.create({
-          name: "Rua A",
-          city: "Rio de Janeiro",
-          number: 123,
-          state: "RJ",
-          zipCode: 321,
-        }),
-        Address.create({
-          name: "Rua B",
-          city: "Rio de Janeiro",
-          number: 123,
-          state: "RJ",
-          zipCode: 321,
-        }),
-        Address.create({
-          name: "Rua C",
-          city: "Rio de Janeiro",
-          number: 123,
-          state: "RJ",
-          zipCode: 321,
-        }),
+        "Avenida Rio Branc, 1 Centro, Rio de Janeiro RJ",
+        "Praça Mal. âncora, 122 Centro, Rio de Janeiro RJ",
+        "Rua 19 de Fevereiro, 34 Botafogo, Rio de Janeiro"
       ],
     });
 
@@ -37,25 +18,13 @@ describe("Create address submission use case", () => {
   it("should not create submission with less than 3 addresses", async () => {
     const adds = new AddressSubmission();
 
-    const response = await adds.execute({
-      addresses: [
-        Address.create({
-          name: "Rua A",
-          city: "Rio de Janeiro",
-          number: 123,
-          state: "RJ",
-          zipCode: 321,
-        }),
-        Address.create({
-          name: "Rua B",
-          city: "Rio de Janeiro",
-          number: 123,
-          state: "RJ",
-          zipCode: 321,
-        }),
-      ],
-    });
-
-    expect(response.props.addresses.length).toBeLessThan(3);
+    try {
+      await adds.execute({addresses: [
+        "Avenida Rio Branc, 1 Centro, Rio de Janeiro RJ",
+        "Praça Mal. âncora, 122 Centro, Rio de Janeiro RJ",
+      ]});
+    } catch (error) {
+      expect(error).rejects
+    }
   });
 });
